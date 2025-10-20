@@ -1,0 +1,43 @@
+name: Verify Contract
+
+on:
+  workflow_dispatch:
+    inputs:
+      network:
+        description: 'Network where contract is deployed'
+        required: true
+        default: 'sepolia'
+        type: choice
+        options:
+          - sepolia
+          - mainnet
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify on Etherscan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify contract on ${{ inputs.network }}
+        run: npm run verify
+        env:
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
