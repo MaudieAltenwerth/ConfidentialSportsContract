@@ -1,0 +1,53 @@
+{
+  "name": "confidential-sports-contract",
+  "version": "1.0.0",
+  "description": "Privacy-preserving athlete salary management system built on FHE technology",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:coverage": "hardhat coverage",
+    "coverage": "hardhat coverage",
+    "deploy": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "verify": "hardhat run scripts/verify.js --network sepolia",
+    "interact": "hardhat run scripts/interact.js --network sepolia",
+    "simulate": "hardhat run scripts/simulate.js --network sepolia",
+    "node": "hardhat node",
+    "clean": "hardhat clean",
+    "lint": "eslint scripts/**/*.js test/**/*.js",
+    "lint:sol": "solhint 'contracts/**/*.sol'",
+    "lint:fix": "eslint scripts/**/*.js test/**/*.js --fix",
+    "format": "prettier --write 'scripts/**/*.js' 'contracts/**/*.sol' 'test/**/*.js'",
+    "prettier:check": "prettier --check 'scripts/**/*.js' 'contracts/**/*.sol' 'test/**/*.js'",
+    "prepare": "npm run compile"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "fhe",
+    "privacy",
+    "sports",
+    "contracts",
+    "confidential",
+    "smart-contracts"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "hardhat": "^2.19.4",
+    "hardhat-gas-reporter": "^2.0.0",
+    "solidity-coverage": "^0.8.5",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "prettier-plugin-solidity": "^1.3.1",
+    "solhint": "^4.1.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "ethers": "^6.10.0"
+  }
+}
