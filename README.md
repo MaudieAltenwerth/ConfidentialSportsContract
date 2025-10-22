@@ -40,127 +40,66 @@ Key features include:
 
 **Contract Address**: `0x0A42624B5d5e1400556a3487f2171423c57519e0`
 
-The FHE-enabled smart contract manages all confidential operations, including:
+**Network**: Sepolia Testnet
 
-- Team and athlete registration with encrypted financial data
-- Confidential contract proposals and negotiations
-- Privacy-preserving salary cap verification
-- Secure access control for sensitive information
-- Encrypted event emissions for tracking
+**Explorer**: [View on Etherscan](https://sepolia.etherscan.io/address/0x0A42624B5d5e1400556a3487f2171423c57519e0)
 
-## Features
-
-### For Teams
-- Register teams with confidential salary cap limits
-- Submit encrypted contract offers to athletes
-- Verify salary cap compliance without exposing individual salaries
-- Manage athlete rosters with privacy guarantees
-
-### For Athletes
-- Register with encrypted salary expectations
-- Receive and evaluate confidential contract offers
-- Maintain privacy of compensation details
-- Track contract history securely
-
-### For Leagues
-- Monitor overall contract activity
-- Ensure salary cap compliance across teams
-- Generate privacy-preserving statistics
-- Maintain competitive balance
-
-## Demo
-
-🎥 **Video Demonstration**: [Watch Demo](ConfidentialSportsContract.mp4)
-
-🌐 **Live Application**: [https://confidential-sports.vercel.app/](https://confidential-sports.vercel.app/)
-
-📦 **GitHub Repository**: [https://github.com/MaudieAltenwerth/ConfidentialSportsContract](https://github.com/MaudieAltenwerth/ConfidentialSportsContract)
+The FHE-enabled smart contract manages all confidential operations.
 
 ## Technology Stack
 
+- **Development Framework**: Hardhat v2.19.4
 - **Blockchain**: Ethereum-compatible network with FHE support
-- **Encryption**: Fully Homomorphic Encryption for confidential computations
-- **Smart Contracts**: Solidity with FHE libraries
-- **Frontend**: Vanilla JavaScript with Ethers.js
-- **Web3**: MetaMask integration for wallet connectivity
+- **Smart Contracts**: Solidity v0.8.24 with FHE libraries
+- **Testing**: Hardhat test suite with Chai assertions
+- **Web3**: Ethers.js v6 for blockchain interaction
 
-## Use Cases
+## Getting Started
 
-### Professional Sports Leagues
-- **NBA/NFL/MLB**: Manage salary caps while protecting player compensation privacy
-- **European Football**: Handle confidential transfer fees and wages
-- **International Sports**: Coordinate multi-currency contracts with privacy
+### Prerequisites
 
-### Agent Negotiations
-- Compare multiple offers without revealing specific terms
-- Benchmark against market rates confidentially
-- Protect client financial privacy
+- Node.js v18.0.0 or higher
+- npm v9.0.0 or higher
+- MetaMask or compatible Web3 wallet
+- Sepolia testnet ETH for deployment
 
-### Financial Compliance
-- Verify salary cap compliance without data exposure
-- Audit contract terms while maintaining confidentiality
-- Generate encrypted reports for regulatory bodies
+### Installation
 
-## Privacy Guarantees
+```bash
+# Install dependencies
+npm install
 
-The system provides the following privacy assurances:
-
-1. **Data Confidentiality**: Salaries and bonuses are never exposed in plaintext on-chain
-2. **Computation Privacy**: All financial calculations occur on encrypted data
-3. **Access Control**: Only authorized parties can decrypt sensitive information
-4. **Verifiable Results**: Contract compliance can be proven without revealing details
-5. **No Trusted Third Party**: Privacy is cryptographically guaranteed, not policy-based
-
-## Architecture
-
-```
-┌─────────────────┐
-│   Web Frontend  │
-│  (React/JS UI)  │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   Ethers.js     │
-│ (Web3 Provider) │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  FHE Contract   │
-│ (Smart Contract)│
-│  - Encrypted    │
-│    Storage      │
-│  - FHE Compute  │
-│  - Access Ctrl  │
-└─────────────────┘
+# Copy environment file
+cp .env.example .env
 ```
 
-## Security Considerations
+### Scripts
 
-- All sensitive data is encrypted using FHE before submission
-- Private keys never leave the user's wallet
-- Contract access is controlled via on-chain permissions
-- Encrypted data cannot be decrypted by unauthorized parties
-- All transactions are cryptographically signed and verified
+```bash
+# Compile
+npm run compile
 
-## Future Enhancements
+# Test
+npm test
 
-- Multi-signature approval for high-value contracts
-- Encrypted escrow for signing bonuses
-- Privacy-preserving dispute resolution
-- Cross-chain confidential transfers
-- Encrypted performance metrics tracking
-- Anonymous salary benchmarking marketplace
+# Deploy
+npm run deploy
 
-## Support
+# Verify
+npm run verify
 
-For questions, issues, or contributions, please visit our GitHub repository or open an issue.
+# Interact
+npm run interact
 
-## Acknowledgments
+# Simulate
+npm run simulate
+```
 
-Built with cutting-edge Fully Homomorphic Encryption technology to bring privacy and security to sports contract management.
+## Documentation
 
----
+- [Deployment Guide](DEPLOYMENT.md)
+- [Contributing Guide](CONTRIBUTING.md)
 
-**Note**: This is experimental technology. Always verify contract addresses and test thoroughly before handling real assets.
+## License
+
+MIT License
