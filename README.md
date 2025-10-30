@@ -185,18 +185,40 @@ FHE.allow(encryptedValue, address);   // Grant address permission
 
 ## Technology Stack
 
+### Frontend Technologies (React Application)
+- **UI Framework**: React v18.2.0 - Modern component-based architecture
+- **Build Tool**: Vite v5.0.11 - Fast development and optimized builds
+- **Language**: JavaScript (JSX) - Dynamic web application development
+- **Styling**: CSS3 with responsive design and gradient animations
+- **Component Architecture**: Functional components with React Hooks
+- **State Management**: React useState and useEffect hooks
+- **Form Handling**: Native FormData API with controlled inputs
+
 ### Blockchain & Smart Contracts
 - **Development Framework**: Hardhat v2.19.4 - Ethereum development environment
 - **Smart Contract Language**: Solidity v0.8.24 with FHE extensions
-- **FHE Library**: Zama fhevmjs for encrypted computations
+- **FHE Library**: Zama fhevmjs v0.5.0 for encrypted computations
+- **SDK Integration**: @fhevm-sdk/core - Framework-agnostic FHEVM SDK
 - **Network**: Sepolia Testnet with FHE coprocessor support
 - **Contract Standard**: EIP-712 for typed data signing
 
 ### Web3 & Frontend Integration
-- **Blockchain Interaction**: Ethers.js v6.10.0
-- **Wallet Integration**: MetaMask, WalletConnect support
+- **Blockchain Interaction**: Ethers.js v6.10.0 (BrowserProvider, Contract)
+- **Wallet Integration**: MetaMask with automatic reconnection
+- **SDK Hooks**: useFhevmClient, useFhevmInit, useEncryptedInput
+- **Provider Pattern**: FhevmProvider for global state management
 - **RPC Provider**: Infura/Alchemy for reliable node access
-- **Network Detection**: Automatic chain ID verification
+- **Network Detection**: Automatic chain ID verification and switching
+- **Transaction Management**: Real-time status updates and confirmations
+
+### FHE (Fully Homomorphic Encryption) Integration
+- **Encryption Library**: fhevmjs for client-side encryption
+- **SDK Architecture**: Framework-agnostic core with React bindings
+- **Encrypted Types**: Support for euint8, euint16, euint32, euint64, ebool
+- **Key Management**: Automatic FHE key initialization and caching
+- **Input Encryption**: createEncryptedInput() for batch encryption
+- **Permission System**: FHE.allow() and FHE.allowThis() access control
+- **Decryption**: EIP-712 signed decryption requests for privacy
 
 ### Testing & Quality Assurance
 - **Test Framework**: Hardhat with Mocha and Chai
@@ -204,18 +226,30 @@ FHE.allow(encryptedValue, address);   // Grant address permission
 - **Code Quality**: ESLint, Prettier, Solhint
 - **CI/CD**: GitHub Actions for automated testing
 - **Test Networks**: Local Hardhat network, Sepolia testnet
+- **Browser Testing**: Manual testing with MetaMask integration
 
 ### Deployment & Verification
-- **Deployment Scripts**: Automated deploy.js with validation
+- **Frontend Hosting**: Vercel with automatic deployments
+- **Contract Deployment**: Automated deploy.js with validation
 - **Contract Verification**: Etherscan API integration
 - **Interaction Tools**: Interactive scripts for contract operations
 - **Simulation**: End-to-end workflow testing
+- **Live Demo**: Production deployment at confidential-sports.vercel.app
 
-### Development Tools
+### Development Tools & DevOps
 - **Package Manager**: npm with workspace support
+- **Module Bundler**: Vite with Hot Module Replacement (HMR)
 - **Version Control**: Git with comprehensive .gitignore
 - **Environment Management**: dotenv for configuration
 - **Documentation**: Comprehensive Markdown documentation
+- **Browser DevTools**: React DevTools, MetaMask debugging
+- **Build Optimization**: Vite production build with tree-shaking
+
+### Additional Libraries & Dependencies
+- **React DOM**: v18.2.0 for rendering
+- **Vite Plugin React**: v4.2.1 for JSX transformation
+- **Polyfills**: process, buffer, crypto-browserify for Web3 compatibility
+- **Type Definitions**: TypeScript definitions for better IDE support
 
 ## Getting Started
 
