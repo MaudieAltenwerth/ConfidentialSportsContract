@@ -2,23 +2,47 @@
 
 A privacy-preserving athlete salary management system built on Fully Homomorphic Encryption (FHE) technology, enabling secure and confidential contract negotiations in professional sports.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Solidity](https://img.shields.io/badge/Solidity-0.8.24-blue.svg)](https://soliditylang.org/)
-[![Hardhat](https://img.shields.io/badge/Hardhat-2.19.4-orange.svg)](https://hardhat.org/)
+## 🌐 Live Demo
 
-**Live Demo**: [https://confidential-sports.vercel.app/](https://confidential-sports.vercel.app/)
+**Website**: [https://confidential-sports.vercel.app/](https://confidential-sports.vercel.app/)
 
-**GitHub Repository**: [https://github.com/MaudieAltenwerth/ConfidentialSportsContract](https://github.com/MaudieAltenwerth/ConfidentialSportsContract)
+## 🎬 Demo Video
 
-**Demo Video**: Download and watch `demo.mp4` to see the full system demonstration (video link is not clickable, please download the file to view)
+**Demo Video**: The `demo.mp4` file demonstrates the complete sports contract management workflow with FHE encryption.
 
 ## Overview
 
-This decentralized application revolutionizes sports contract management by ensuring complete privacy of athlete salaries and contract terms while maintaining transparency in the verification process. Using FHE technology from Zama, sensitive financial data remains encrypted throughout all operations, protecting both athletes and teams from unauthorized disclosure.
+This decentralized application revolutionizes sports contract management by ensuring complete privacy of athlete salaries and contract terms while maintaining transparency in the verification process. Using FHE technology, sensitive financial data remains encrypted throughout all operations, protecting both athletes and teams from unauthorized disclosure.
 
-### Key Innovation
+## Key Features
 
-The system leverages **Fully Homomorphic Encryption (FHE)** to perform computations on encrypted data without ever decrypting it, enabling unprecedented privacy in sports contract management while maintaining auditability and compliance verification.
+### Privacy-Preserving Architecture
+
+- **Encrypted Salaries**: All athlete compensation encrypted on-chain using FHE
+- **Gateway Callback Pattern**: Asynchronous decryption via trusted Gateway
+- **Privacy Obfuscation**: Random multiplier protection against division attacks
+- **Selective Decryption**: Role-based access to encrypted data
+
+### Advanced Security
+
+- **Input Validation**: Comprehensive bounds checking on all inputs
+- **Access Control**: Role-based permissions (Owner, Team Manager, Athlete)
+- **Overflow Protection**: Built-in Solidity 0.8.24 safety features
+- **Audit Trail**: Complete event logging for all operations
+
+### Timeout Protection & Refunds
+
+- **Decryption Timeout**: 1-hour timeout for stuck Gateway requests
+- **Proposal Expiry**: 30-day expiration for contract proposals
+- **Emergency Withdrawal**: Recovery mechanism for expired proposals
+- **Automatic Refunds**: Failed decryptions trigger auto-rejection
+
+### Gas Optimization
+
+- **HCU Efficiency**: Optimized homomorphic computation units
+- **Batched Operations**: Reduced on-chain computation
+- **Smart Permissions**: Efficient FHE permission management
+- **State Caching**: Minimized redundant calculations
 
 ## Core Concepts
 
@@ -31,497 +55,399 @@ FHE allows computations to be performed directly on encrypted data without ever 
 - **Secure Negotiations**: Contract proposals are processed while keeping financial terms private
 - **Privacy-Preserving Analytics**: Teams can analyze payroll data without exposing sensitive information
 
-### Confidential Athlete Salaries - The Core Privacy Model
+### Gateway Callback Pattern
 
-The system implements multiple layers of privacy protection for athlete compensation:
+All decryption operations follow a secure asynchronous pattern:
 
-#### Encrypted Salary Storage
-All athlete salaries and bonuses are stored using FHE encrypted types (`euint32`):
-- **On-Chain Encryption**: Salary data never exists in plaintext on the blockchain
-- **Permanent Privacy**: Even validators and node operators cannot see actual values
-- **Selective Decryption**: Only authorized parties with proper permissions can decrypt
-- **Immutable Records**: All encrypted data is tamper-proof and auditable
-
-#### Access Control Hierarchy
-- **Athletes**: Can view only their own encrypted salary and bonus information
-- **Team Managers**: Can access encrypted data for athletes on their roster
-- **Contract Owner**: Administrative access for system-wide operations
-- **Public**: Can view non-sensitive information (names, positions, contract dates)
-
-#### Privacy-Preserving Operations
-The system performs computations on encrypted data:
-- **Payroll Calculation**: Team total payroll computed without decrypting individual salaries
-- **Salary Cap Verification**: Compliance checks using FHE comparison operations
-- **Bonus Processing**: Encrypted bonus amounts added to base salaries
-- **Contract Comparisons**: Evaluate multiple offers without revealing amounts
-
-### Privacy Sports Contract Management System
-
-This comprehensive contract management platform provides:
-
-#### Team Management
-- **Encrypted Salary Caps**: Each team has a confidential maximum payroll limit
-- **Roster Privacy**: Team composition visible, but compensation remains private
-- **League Organization**: Support for multiple leagues with different salary structures
-- **Manager Controls**: Team managers can propose and manage contracts
-
-#### Athlete Registration
-- **Confidential Compensation**: Base salary and performance bonuses fully encrypted
-- **Contract Duration**: Transparent start and end dates for contract terms
-- **Position Information**: Public position data (Forward, Guard, etc.)
-- **Multi-Team History**: Athletes can transfer between teams with encrypted salary updates
-
-#### Contract Proposal System
-- **Private Negotiations**: Teams propose new contracts with encrypted terms
-- **Athlete Approval**: Players review and approve encrypted offers
-- **Counteroffer Support**: Salary adjustments without public disclosure
-- **Historical Records**: All proposals stored with timestamps and status
-
-#### Automated Compliance Verification
-- **Salary Cap Enforcement**: Real-time verification without revealing individual salaries
-- **Encrypted Comparisons**: FHE-based `le()` (less than or equal) operations
-- **Automatic Alerts**: Smart contract events for compliance violations
-- **Payroll Updates**: Dynamic recalculation as roster changes occur
-
-## Smart Contract Architecture
-
-### Deployed Contract
-
-**Contract Address**: `0x0A42624B5d5e1400556a3487f2171423c57519e0`
-
-**Network**: Sepolia Testnet (Chain ID: 11155111)
-
-**Explorer**: [View on Etherscan](https://sepolia.etherscan.io/address/0x0A42624B5d5e1400556a3487f2171423c57519e0)
-
-**Compiler**: Solidity v0.8.24 with FHE optimizations
-
-### Contract Structure
-
-#### Core Data Structures
-
-```solidity
-struct Athlete {
-    string name;
-    string position;
-    uint256 teamId;
-    euint32 encryptedSalary;      // FHE encrypted salary
-    euint32 encryptedBonus;       // FHE encrypted bonus
-    bool isActive;
-    uint256 contractStart;
-    uint256 contractEnd;
-    address athleteAddress;
-}
-
-struct Team {
-    string teamName;
-    string league;
-    address teamManager;
-    euint32 encryptedTotalPayroll;  // FHE encrypted total
-    euint32 encryptedSalaryCap;     // FHE encrypted cap
-    uint256[] athleteIds;
-    bool isActive;
-}
-
-struct ContractProposal {
-    uint256 athleteId;
-    uint256 teamId;
-    euint32 proposedSalary;         // FHE encrypted offer
-    euint32 proposedBonus;          // FHE encrypted bonus
-    uint256 contractDuration;
-    bool isPending;
-    bool isApproved;
-    address proposer;
-    uint256 timestamp;
-}
+```
+User Request → Contract Records → Gateway Decrypts → Callback Completes Transaction
 ```
 
-#### Key Functions
+**Benefits:**
+- Non-blocking operations
+- Cryptographic proof verification
+- Timeout protection for failed operations
+- State consistency guarantees
 
-**Team Operations:**
-- `registerTeam()`: Create new team with encrypted salary cap
-- `getTeamInfo()`: Retrieve public team information
-- `deactivateTeam()`: Remove team from active roster
+### Privacy Protection Techniques
 
-**Athlete Operations:**
-- `registerAthlete()`: Add athlete with encrypted compensation
-- `updateAthleteSalary()`: Modify encrypted salary and bonus
-- `getAthleteInfo()`: Fetch public athlete details
-- `deactivateAthlete()`: Mark athlete as inactive
+#### 1. Division Attack Protection
+Random multiplier (1000x) applied to salaries to prevent ratio analysis:
 
-**Contract Management:**
-- `proposeContract()`: Submit encrypted contract offer
-- `approveContract()`: Athlete accepts proposal
-- `getProposalInfo()`: View proposal status
-
-**Privacy Operations:**
-- `checkSalaryCap()`: Verify compliance using FHE comparison
-- `_updateTeamPayroll()`: Recalculate encrypted team total
-- `getMyAthletes()`: List athlete IDs for address
-- `getMyTeams()`: List team IDs for manager
-
-#### Security Features
-
-**Access Modifiers:**
-- `onlyOwner`: Contract owner administrative functions
-- `onlyTeamManager(teamId)`: Team-specific management
-- `onlyAthlete(athleteId)`: Athlete self-management
-- `validTeam(teamId)`: Team existence validation
-- `validAthlete(athleteId)`: Athlete existence validation
-
-**FHE Permission Management:**
 ```solidity
-FHE.allowThis(encryptedValue);        // Contract can access
-FHE.allow(encryptedValue, address);   // Grant address permission
+euint32 obfuscatedSalary = FHE.mul(encryptedSalary, PRIVACY_MULTIPLIER);
 ```
 
-**Events for Transparency:**
-- `AthleteRegistered`: New athlete added
-- `TeamRegistered`: New team created
-- `SalaryUpdated`: Compensation modified
-- `ContractProposed`: New offer submitted
-- `ContractApproved`: Offer accepted
-- `PayrollUpdated`: Team totals recalculated
-- `SeasonStarted`: New season initiated
+#### 2. Price Obfuscation
+All financial data stored and processed in encrypted form, preventing statistical analysis.
+
+#### 3. Encrypted Comparisons
+Salary cap compliance checked without decryption:
+
+```solidity
+ebool isCompliant = FHE.le(totalPayroll, salaryCap);
+```
+
+## Smart Contract
+
+**Network**: Ethereum-compatible with FHE support (Sepolia Testnet)
+
+**Solidity Version**: ^0.8.24
+
+**FHE Library**: @fhevm/solidity
+
+The contract manages:
+- Team registration with encrypted salary caps
+- Athlete registration with privacy-protected salaries
+- Contract proposals with Gateway callback pattern
+- Timeout protection and refund mechanisms
+- Privacy-preserving salary cap compliance
 
 ## Technology Stack
 
-### Frontend Technologies (React Application)
-- **UI Framework**: React v18.2.0 - Modern component-based architecture
-- **Build Tool**: Vite v5.0.11 - Fast development and optimized builds
-- **Language**: JavaScript (JSX) - Dynamic web application development
-- **Styling**: CSS3 with responsive design and gradient animations
-- **Component Architecture**: Functional components with React Hooks
-- **State Management**: React useState and useEffect hooks
-- **Form Handling**: Native FormData API with controlled inputs
-
-### Blockchain & Smart Contracts
-- **Development Framework**: Hardhat v2.19.4 - Ethereum development environment
-- **Smart Contract Language**: Solidity v0.8.24 with FHE extensions
-- **FHE Library**: Zama fhevmjs v0.5.0 for encrypted computations
-- **SDK Integration**: @fhevm-sdk/core - Framework-agnostic FHEVM SDK
-- **Network**: Sepolia Testnet with FHE coprocessor support
-- **Contract Standard**: EIP-712 for typed data signing
-
-### Web3 & Frontend Integration
-- **Blockchain Interaction**: Ethers.js v6.10.0 (BrowserProvider, Contract)
-- **Wallet Integration**: MetaMask with automatic reconnection
-- **SDK Hooks**: useFhevmClient, useFhevmInit, useEncryptedInput
-- **Provider Pattern**: FhevmProvider for global state management
-- **RPC Provider**: Infura/Alchemy for reliable node access
-- **Network Detection**: Automatic chain ID verification and switching
-- **Transaction Management**: Real-time status updates and confirmations
-
-### FHE (Fully Homomorphic Encryption) Integration
-- **Encryption Library**: fhevmjs for client-side encryption
-- **SDK Architecture**: Framework-agnostic core with React bindings
-- **Encrypted Types**: Support for euint8, euint16, euint32, euint64, ebool
-- **Key Management**: Automatic FHE key initialization and caching
-- **Input Encryption**: createEncryptedInput() for batch encryption
-- **Permission System**: FHE.allow() and FHE.allowThis() access control
-- **Decryption**: EIP-712 signed decryption requests for privacy
-
-### Testing & Quality Assurance
-- **Test Framework**: Hardhat with Mocha and Chai
-- **Coverage**: 45+ comprehensive test cases
-- **Code Quality**: ESLint, Prettier, Solhint
-- **CI/CD**: GitHub Actions for automated testing
-- **Test Networks**: Local Hardhat network, Sepolia testnet
-- **Browser Testing**: Manual testing with MetaMask integration
-
-### Deployment & Verification
-- **Frontend Hosting**: Vercel with automatic deployments
-- **Contract Deployment**: Automated deploy.js with validation
-- **Contract Verification**: Etherscan API integration
-- **Interaction Tools**: Interactive scripts for contract operations
-- **Simulation**: End-to-end workflow testing
-- **Live Demo**: Production deployment at confidential-sports.vercel.app
-
-### Development Tools & DevOps
-- **Package Manager**: npm with workspace support
-- **Module Bundler**: Vite with Hot Module Replacement (HMR)
-- **Version Control**: Git with comprehensive .gitignore
-- **Environment Management**: dotenv for configuration
-- **Documentation**: Comprehensive Markdown documentation
-- **Browser DevTools**: React DevTools, MetaMask debugging
-- **Build Optimization**: Vite production build with tree-shaking
-
-### Additional Libraries & Dependencies
-- **React DOM**: v18.2.0 for rendering
-- **Vite Plugin React**: v4.2.1 for JSX transformation
-- **Polyfills**: process, buffer, crypto-browserify for Web3 compatibility
-- **Type Definitions**: TypeScript definitions for better IDE support
+- **Development Framework**: Hardhat v2.19.4
+- **Blockchain**: Ethereum-compatible network with FHE support
+- **Smart Contracts**: Solidity v0.8.24 with FHE libraries
+- **Testing**: Hardhat test suite with Chai assertions
+- **Web3**: Ethers.js v6 for blockchain interaction
+- **FHE Library**: fhevmjs for client-side encryption
 
 ## Getting Started
 
 ### Prerequisites
 
-**Required Software:**
-- Node.js v18.0.0 or higher ([Download](https://nodejs.org/))
-- npm v9.0.0 or higher (included with Node.js)
-- Git for version control
-
-**Blockchain Requirements:**
-- MetaMask browser extension ([Install](https://metamask.io/))
-- Sepolia testnet ETH ([Get from faucet](https://sepoliafaucet.com/))
-- Infura or Alchemy API key ([Sign up](https://infura.io/))
-
-**Recommended:**
-- Visual Studio Code with Solidity extension
-- Basic understanding of Ethereum and smart contracts
-- Familiarity with FHE concepts
+- Node.js v18.0.0 or higher
+- npm v9.0.0 or higher
+- MetaMask or compatible Web3 wallet
+- Sepolia testnet ETH for deployment
 
 ### Installation
 
-1. **Clone the Repository**
 ```bash
-git clone https://github.com/MaudieAltenwerth/ConfidentialSportsContract.git
-cd ConfidentialSportsContract
-```
-
-2. **Install Dependencies**
-```bash
+# Install dependencies
 npm install
-```
 
-3. **Configure Environment**
-```bash
-# Copy environment template
+# Copy environment file
 cp .env.example .env
-
-# Edit .env with your settings:
-# - INFURA_API_KEY or ALCHEMY_API_KEY
-# - PRIVATE_KEY (for deployment)
-# - ETHERSCAN_API_KEY (for verification)
 ```
 
-4. **Compile Contracts**
+### Configuration
+
+Edit `.env` file:
+
+```env
+PRIVATE_KEY=your_private_key_here
+SEPOLIA_RPC_URL=your_sepolia_rpc_url
+ETHERSCAN_API_KEY=your_etherscan_api_key
+```
+
+### Scripts
+
 ```bash
+# Compile contracts
 npm run compile
+
+# Run tests
+npm test
+
+# Deploy to network
+npm run deploy
+
+# Verify contract
+npm run verify
+
+# Interact with contract
+npm run interact
+
+# Run simulation
+npm run simulate
 ```
 
-### Available Scripts
+## Usage Examples
 
-**Development:**
+### Registering a Team (Owner Only)
+
+```javascript
+const teamId = await contract.registerTeam(
+    "Champions United",
+    "Premier League",
+    managerAddress,
+    ethers.parseEther("100000") // 100,000 ETH salary cap
+);
+```
+
+### Registering an Athlete (Team Manager)
+
+```javascript
+// Encrypt salary data
+const encryptedSalary = await fheInstance.encrypt32(ethers.parseEther("5000"));
+const encryptedBonus = await fheInstance.encrypt32(ethers.parseEther("1000"));
+
+const athleteId = await contract.registerAthlete(
+    "Jane Doe",
+    "Striker",
+    teamId,
+    athleteAddress,
+    encryptedSalary,
+    encryptedBonus,
+    48  // 4-year contract
+);
+```
+
+### Proposing a Contract (Gateway Callback Pattern)
+
+```javascript
+// 1. Team manager proposes contract
+const proposalId = await contract.proposeContract(
+    athleteId,
+    teamId,
+    encryptedNewSalary,
+    encryptedNewBonus,
+    36  // 3-year contract
+);
+
+// 2. Athlete requests decryption
+const requestId = await contract.requestProposalDecryption(proposalId);
+
+// 3. Wait for Gateway callback
+contract.on('DecryptionCompleted', async (reqId, success) => {
+    if (reqId === requestId && success) {
+        // 4. Athlete approves after reviewing decrypted terms
+        await contract.approveContract(proposalId);
+    }
+});
+
+// 5. Handle timeout if Gateway fails
+setTimeout(async () => {
+    const status = await contract.getDecryptionStatus(requestId);
+    if (!status.completed && !status.timedOut) {
+        await contract.handleDecryptionTimeout(requestId);
+        await contract.emergencyWithdrawProposal(proposalId);
+    }
+}, 3600000); // 1 hour timeout
+```
+
+### Checking Salary Cap Compliance
+
+```javascript
+// Returns encrypted boolean (ebool)
+const isCompliant = await contract.checkSalaryCap(teamId);
+
+// Team manager can decrypt result
+const result = await fheInstance.decrypt(isCompliant, teamManagerAddress);
+console.log(`Team is ${result ? 'compliant' : 'over'} salary cap`);
+```
+
+## Architecture
+
+### Contract Structure
+
+```
+ConfidentialSportsContract
+├── Team Management
+│   ├── registerTeam()
+│   └── deactivateTeam()
+├── Athlete Management
+│   ├── registerAthlete()
+│   ├── updateAthleteSalary()
+│   └── deactivateAthlete()
+├── Contract Proposals (Gateway Pattern)
+│   ├── proposeContract()
+│   ├── requestProposalDecryption()
+│   ├── proposalDecryptionCallback()
+│   ├── approveContract()
+│   └── rejectContract()
+├── Timeout & Refund Protection
+│   ├── handleDecryptionTimeout()
+│   └── emergencyWithdrawProposal()
+├── Privacy-Preserving Operations
+│   ├── checkSalaryCap()
+│   └── _updateTeamPayroll()
+└── View Functions
+    ├── getAthleteInfo()
+    ├── getTeamInfo()
+    ├── getProposalInfo()
+    └── getDecryptionStatus()
+```
+
+### Security Features
+
+1. **Input Validation**
+   - Salary range: 0.001 ETH to 1,000,000 ETH
+   - Contract duration: 1-120 months (max 10 years)
+   - String length: 1-100 characters
+   - Address validation: non-zero addresses
+
+2. **Access Control**
+   - Owner: System administration
+   - Team Manager: Team and athlete management
+   - Athlete: Contract approval/rejection
+
+3. **Overflow Protection**
+   - Solidity 0.8.24 built-in checks
+   - Validated input ranges
+   - Safe arithmetic operations
+
+4. **FHE Permission Management**
+   - Granular access control
+   - Explicit permission grants
+   - No unauthorized decryption
+
+### Privacy Solutions
+
+| Problem | Solution | Implementation |
+|---------|----------|----------------|
+| Division attacks | Random multiplier | `PRIVACY_MULTIPLIER = 1000` |
+| Price leakage | Encryption + obfuscation | `euint32` storage |
+| Async operations | Gateway callback pattern | `requestDecryption()` |
+| Gas optimization | HCU-efficient operations | Batched FHE operations |
+
+## Documentation
+
+- **[Architecture Documentation](./ARCHITECTURE.md)**: Detailed system design and implementation
+- **[API Documentation](./API.md)**: Complete function reference and examples
+- **[Deployment Guide](./DEPLOYMENT.md)**: Step-by-step deployment instructions
+- **[Contributing Guide](./CONTRIBUTING.md)**: How to contribute to the project
+
+## Contract Constants
+
+```solidity
+uint256 public constant DECRYPTION_TIMEOUT = 1 hours;
+uint256 public constant MAX_CONTRACT_DURATION = 10 * 365 days;
+uint256 public constant MIN_SALARY = 0.001 ether;
+uint256 public constant MAX_SALARY_CAP = 1000000 ether;
+uint256 private constant PRIVACY_MULTIPLIER = 1000;
+```
+
+## Events
+
+The contract emits comprehensive events for monitoring:
+
+- `TeamRegistered`: New team added
+- `AthleteRegistered`: New athlete added
+- `ContractProposed`: Contract proposal created
+- `DecryptionRequested`: Gateway decryption requested
+- `DecryptionCompleted`: Gateway callback received
+- `DecryptionTimedOut`: Request timed out
+- `ContractApproved`: Proposal approved
+- `ContractRejected`: Proposal rejected
+- `EmergencyWithdrawal`: Expired proposal withdrawn
+- `SalaryUpdated`: Athlete salary updated
+- `PayrollUpdated`: Team payroll recalculated
+- `SeasonStarted`: New season initiated
+
+## Testing
+
 ```bash
-npm run compile          # Compile smart contracts
-npm run test            # Run comprehensive test suite
-npm run coverage        # Generate code coverage report
-npm run lint            # Check code quality
-npm run format          # Format code with Prettier
+# Run all tests
+npm test
+
+# Run specific test file
+npx hardhat test test/ConfidentialSportsContract.test.js
+
+# Run with gas reporting
+REPORT_GAS=true npm test
+
+# Run with coverage
+npm run coverage
 ```
-
-**Deployment:**
-```bash
-npm run deploy          # Deploy to configured network
-npm run deploy:sepolia  # Deploy specifically to Sepolia
-npm run verify          # Verify contract on Etherscan
-```
-
-**Interaction:**
-```bash
-npm run interact        # Interactive contract operations
-npm run simulate        # Simulate complete workflow
-```
-
-**Utilities:**
-```bash
-npm run clean           # Clean build artifacts
-npm run size            # Check contract sizes
-npm run accounts        # List available accounts
-```
-
-### Quick Start Guide
-
-1. **Set Up MetaMask**
-   - Install MetaMask extension
-   - Switch to Sepolia Testnet
-   - Get test ETH from faucet
-
-2. **Configure Project**
-   - Add your Infura/Alchemy key to `.env`
-   - Add deployment wallet private key
-   - Add Etherscan API key for verification
-
-3. **Deploy Contract**
-   ```bash
-   npm run deploy
-   ```
-
-4. **Verify on Etherscan**
-   ```bash
-   npm run verify
-   ```
-
-5. **Interact with Contract**
-   ```bash
-   npm run interact
-   ```
-
-6. **Try Live Demo**
-   - Visit: [https://confidential-sports.vercel.app/](https://confidential-sports.vercel.app/)
-   - Connect your MetaMask wallet
-   - Register teams and athletes
-   - Test encrypted operations
-
-### Project Structure
-
-```
-ConfidentialSportsContract/
-├── contracts/
-│   └── ConfidentialSportsContract.sol  # Main FHE contract
-├── scripts/
-│   ├── deploy.js                       # Deployment automation
-│   ├── verify.js                       # Etherscan verification
-│   ├── interact.js                     # Contract interaction
-│   └── simulate.js                     # Workflow simulation
-├── test/
-│   └── ConfidentialSportsContract.test.js  # 45+ test cases
-├── .github/
-│   └── workflows/                      # CI/CD pipelines
-├── hardhat.config.cjs                  # Hardhat configuration
-├── package.json                        # Dependencies and scripts
-├── README.md                           # This file
-├── DEPLOYMENT.md                       # Deployment guide
-└── CONTRIBUTING.md                     # Contribution guidelines
-```
-
-## Use Cases
-
-### Professional Sports Leagues
-- **NBA/NFL/MLB**: Manage player contracts with salary privacy
-- **International Teams**: Cross-border contract negotiations
-- **Minor Leagues**: Confidential compensation for developing players
-
-### Real-World Benefits
-- **Athlete Privacy**: Protect personal financial information
-- **Fair Negotiations**: Prevent salary information leaks during negotiations
-- **Compliance**: Verify salary cap compliance without exposing data
-- **Team Strategy**: Maintain competitive advantage with private payroll
-
-### Business Applications
-- **Executive Compensation**: Private salary management for C-suite
-- **Talent Agencies**: Confidential client contract management
-- **HR Systems**: Privacy-preserving employee compensation
-- **Financial Services**: Encrypted compensation planning
 
 ## Security Considerations
 
-### Smart Contract Security
-- **Access Control**: Role-based permissions with multiple modifiers
-- **Input Validation**: Comprehensive checks on all external calls
-- **Reentrancy Protection**: No external calls before state changes
-- **Integer Overflow**: Solidity 0.8.24 built-in protection
-- **FHE Permissions**: Explicit permission grants for encrypted data
+### Audit Recommendations
 
-### Privacy Guarantees
-- **End-to-End Encryption**: Data encrypted before submission
-- **On-Chain Privacy**: Blockchain storage never reveals plaintext
-- **Selective Decryption**: Only authorized parties can decrypt
-- **No Backdoors**: Cryptographically impossible to break encryption
+1. **Gateway Callback Security**
+   - Verify signature validation in `proposalDecryptionCallback()`
+   - Check replay attack prevention
+   - Validate callback authorization
 
-### Audit & Testing
-- **45+ Test Cases**: Comprehensive functionality coverage
-- **Edge Case Testing**: Boundary conditions and error scenarios
-- **Integration Tests**: Full workflow simulations
-- **Access Control Tests**: Permission and authorization verification
-- **Gas Optimization**: Efficient operations to minimize costs
+2. **Timeout Mechanism**
+   - Test race conditions
+   - Verify state consistency after timeout
+   - Validate emergency withdrawal safety
 
-## Demo Video
+3. **Access Control**
+   - Audit permission enforcement
+   - Review role assignment security
+   - Validate FHE permission management
 
-The `demo.mp4` file contains a comprehensive demonstration of:
-- System architecture and FHE concepts
-- Smart contract deployment and verification
-- Team registration with encrypted salary caps
-- Athlete onboarding with confidential compensation
-- Contract proposal and approval workflow
-- Salary cap compliance verification
-- Live web application demonstration
+4. **Input Validation**
+   - Check bounds enforcement
+   - Test edge cases
+   - Verify overflow protection
 
-**Note**: The video file must be downloaded to view. Direct streaming links are not available.
+### Best Practices
 
-## Live Application
+- Always encrypt sensitive data before submission
+- Monitor decryption request timeouts
+- Implement emergency withdrawal fallbacks
+- Validate event emissions before state changes
+- Use role-based access control consistently
 
-**URL**: [https://confidential-sports.vercel.app/](https://confidential-sports.vercel.app/)
+## Gas Optimization
 
-**Features Available:**
-- Connect MetaMask wallet
-- View contract statistics
-- Register new teams (admin only)
-- Register athletes with encrypted salaries
-- Submit contract proposals
-- Approve pending contracts
-- Check salary cap compliance
-- View public athlete and team information
+### HCU (Homomorphic Computation Units) Tips
 
-**Requirements:**
-- MetaMask installed and connected
-- Sepolia testnet selected
-- Sufficient test ETH for transactions
+1. **Batch Operations**: Combine multiple FHE operations
+2. **Minimize Decryptions**: Only decrypt when absolutely necessary
+3. **Efficient Permissions**: Grant FHE permissions in batches
+4. **Cache Results**: Store encrypted results to avoid recomputation
+
+### Example: Optimized Payroll Calculation
+
+```solidity
+// Efficient: Single loop with batched operations
+euint32 totalPayroll = FHE.asEuint32(0);
+for (uint256 i = 0; i < athleteCount; i++) {
+    euint32 athleteTotal = FHE.add(salary[i], bonus[i]);
+    totalPayroll = FHE.add(totalPayroll, athleteTotal);
+}
+```
+
+## Roadmap
+
+### Future Enhancements
+
+- [ ] Multi-signature contract approvals
+- [ ] Performance-based bonus triggers
+- [ ] Inter-team transfer market
+- [ ] Privacy-preserving league analytics
+- [ ] Automated compliance reporting
+- [ ] Integration with identity systems
+- [ ] Mobile app support
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
-- Code of conduct
-- Development workflow
-- Submitting pull requests
-- Reporting issues
-- Code style guidelines
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
-### Development Workflow
+### Development Process
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Add tests for new functionality
-5. Run test suite: `npm test`
-6. Submit pull request
-
-## Documentation
-
-- **[Deployment Guide](DEPLOYMENT.md)**: Complete deployment instructions
-- **[Contributing Guide](CONTRIBUTING.md)**: How to contribute to the project
-- **[CI/CD Documentation](CI_CD.md)**: GitHub Actions workflows
-- **Demo Video**: `demo.mp4` - System demonstration
-
-## Resources
-
-### Learn More About FHE
-- [Zama Documentation](https://docs.zama.ai/)
-- [FHEVM GitHub](https://github.com/zama-ai/fhevm)
-- [fhevmjs Library](https://github.com/zama-ai/fhevmjs)
-
-### Ethereum Development
-- [Hardhat Documentation](https://hardhat.org/docs)
-- [Ethers.js v6 Docs](https://docs.ethers.org/v6/)
-- [Solidity Documentation](https://docs.soliditylang.org/)
-
-### Network Information
-- [Sepolia Testnet](https://sepolia.dev/)
-- [Sepolia Faucet](https://sepoliafaucet.com/)
-- [Sepolia Explorer](https://sepolia.etherscan.io/)
-
-## Support
-
-For questions, issues, or discussions:
-- **GitHub Issues**: Report bugs or request features
-- **GitHub Repository**: [https://github.com/MaudieAltenwerth/ConfidentialSportsContract](https://github.com/MaudieAltenwerth/ConfidentialSportsContract)
-- **Live Demo**: [https://confidential-sports.vercel.app/](https://confidential-sports.vercel.app/)
+5. Ensure all tests pass
+6. Submit a pull request
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details
+MIT License - see [LICENSE](./LICENSE) file for details.
 
-Copyright (c) 2025 Confidential Sports Contract Contributors
+## Support
+
+For questions, issues, or feature requests:
+
+- Open an issue on GitHub
+- Review the documentation
+- Check existing issues for solutions
 
 ## Acknowledgments
 
-- **Zama**: For pioneering FHE technology and fhevmjs library
-- **Ethereum Foundation**: For blockchain infrastructure
-- **Hardhat Team**: For excellent development tools
-- **Open Source Community**: For continuous improvements and feedback
+- **Zama**: FHE library and tools
+- **Hardhat**: Development framework
+- **Ethereum**: Blockchain platform
+- **OpenZeppelin**: Security patterns
 
----
+## Disclaimer
 
-**Built with Fully Homomorphic Encryption by Zama** 🔐
-
-Protecting athlete privacy while maintaining transparency in sports contract management.
+This software is provided "as is" for educational and development purposes. It has not been audited for production use. Always conduct thorough security audits before deploying to mainnet with real funds.

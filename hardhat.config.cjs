@@ -1,7 +1,20 @@
-require("@nomicfoundation/hardhat-toolbox");
-require("@nomicfoundation/hardhat-verify");
 require("dotenv").config();
+require("@nomicfoundation/hardhat-ethers");
+require("@nomicfoundation/hardhat-verify");
+require("@nomicfoundation/hardhat-chai-matchers");
+require("@fhevm/hardhat-plugin");
 
+// Ensure ts-node compiles test TS files to CJS for Mocha
+try {
+  require("ts-node").register({
+    transpileOnly: true,
+    compilerOptions: { module: "commonjs" },
+  });
+} catch (e) {
+  // ignore if ts-node not available here; hardhat will still run JS tests
+}
+
+/** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
     version: "0.8.24",
@@ -10,39 +23,44 @@ module.exports = {
         enabled: true,
         runs: 200,
       },
-      evmVersion: "cancun",
     },
   },
-
+  mocha: {},
   networks: {
-    hardhat: {
-      chainId: 31337,
+    incentiv: {
+      url: process.env.VITE_INCENTIV_RPC_URL || 'https://rpc.testnet.incentiv.net',
+      chainId: 11690,
+      accounts: process.env.VITE_PRIVATE_KEY ? [process.env.VITE_PRIVATE_KEY] : [],
     },
-    localhost: {
-      url: "http://127.0.0.1:8545",
-      chainId: 31337,
+    "incentiv-testnet": {
+      url: "https://explorer.incentiv.network/api/eth-rpc",
+      chainId: 11690,
+      accounts: process.env.VITE_PRIVATE_KEY ? [process.env.VITE_PRIVATE_KEY] : [],
     },
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL || "https://rpc.sepolia.org",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      accounts: process.env.SEPOLIA_PRIVATE_KEY ? [process.env.SEPOLIA_PRIVATE_KEY] : [],
       chainId: 11155111,
     },
   },
-
+  sourcify: {
+    enabled: true,
+    apiUrl: process.env.NEXT_PUBLIC_SOURCIFY_URL || '',
+    browserUrl: process.env.VITE_INCENTIV_EXPLORER || '',
+  },
   etherscan: {
     apiKey: {
-      sepolia: process.env.ETHERSCAN_API_KEY || "",
+      "incentiv-testnet": "empty",
     },
-  },
-
-  gasReporter: {
-    enabled: process.env.REPORT_GAS === "true",
-  },
-
-  paths: {
-    sources: "./contracts",
-    tests: "./test",
-    cache: "./cache",
-    artifacts: "./artifacts",
-  },
-};
+    customChains: [
+      {
+        network: "incentiv-testnet",
+        chainId: 11690,
+        urls: {
+          apiURL: "https://explorer.incentiv.network/api",
+          browserURL: "https://explorer.incentiv.network",
+        },
+      },
+    ],
+  }
+}; 
